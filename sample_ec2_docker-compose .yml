@@ -16,11 +16,9 @@ services:
         ipv4_address: 172.20.0.2
 
   flask-api:
-    # image: flask-api
-    build: .
+    image: <your-docker-username>/flask-api # Pulling the image from dockerhub
+    # build: .
     container_name: flask-api
-    volumes:
-      - ./:/app # Add this line
     ports:
       - "5000:5000"
     depends_on:

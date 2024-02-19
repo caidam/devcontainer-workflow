@@ -19,9 +19,9 @@ Before getting started, ensure you have the following:
 
 ## Setting Up a Containerized Local Development Environment
 
-Use the `sample_docker-compose.yml` example to create a Docker Compose configuration that you will use to launch your local development environment with the help of the Dev Containers VS Code extension. (It will also help you in a later when deploying your instance on EC2).
+Use the `sample_docker-compose.yml` example to create a Docker Compose configuration that you will only use to launch your local development environment with the help of the Dev Containers VS Code extension.
 
-This setup will enable you to develop directly inside the container while seamlessly syncing changes between your local files and those inside the container.
+This setup will enable you to develop directly inside the container while seamlessly synching changes between your local files and those inside the container.
 
 ```yml
 ...
@@ -33,7 +33,6 @@ This setup will enable you to develop directly inside the container while seamle
       - ./:/app # Sync local directory with container
     ports:
       - "5000:5000"
-      - "8443:443"
     depends_on:
       - pg-db-ws5
     networks:
@@ -53,7 +52,7 @@ git clone https://github.com/caidam/devcontainer-workflow.git
 
 3. Create a **local** `.env` file to assign the environment variables for the project (you can also use the model `sample.env` provided in the repo)
 
-> Make sure to add the .env files to your `.gitignore` since it is not meant to be pushed on GitHub.
+> Make sure to add the `.env` and `docker-compose.yml` files to your `.gitignore` since they meant to be pushed on GitHub.
 
 4. Launch the containers with the command `docker-compose up -d`
 
@@ -89,7 +88,7 @@ mkdir app
 cd app
 ```
 
-3. Inside your newly created app folder copy the content of the `sample_local_docker-compose.yml` file in a file called `docker-compose.yml` on the instance
+3. Inside your newly created app folder copy the content of the `sample_ec2_docker-compose.yml` file in a file called `docker-compose.yml` on the instance
 
 4. Then copy the content of the updated `sample.env` file in a `.env` file on the instance
 
