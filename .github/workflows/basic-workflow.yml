@@ -73,8 +73,8 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
             # sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/flask-api:latest
           script: |
-            cd app
-            sudo docker-compose stop flask-api
-            sudo docker-compose rm flask-api
-            sudo docker rmi ${{ secrets.DOCKER_HUB_USERNAME }}/flask-api
+            cd app &&
+            sudo docker-compose stop flask-api &&
+            sudo docker-compose rm -f flask-api &&
+            sudo docker rmi ${{ secrets.DOCKER_HUB_USERNAME }}/flask-api &&
             sudo docker-compose up -d flask-api
