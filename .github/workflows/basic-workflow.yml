@@ -1,34 +1,3 @@
-# name: Push to Dockerhub
-# on: push
-# jobs:
-#   myJob:
-#     runs-on: ubuntu-latest
-#     environment: 
-#       name: devcontainer-workflow-env
-#     # steps:
-#     #   - name: My step
-#     #     env:
-#     #       MY_SECRET: ${{ secrets.DOCKER_HUB_USERNAME }}
-#     #     run: echo $MY_SECRET
-#     steps:
-#       - name: Check out code
-#         uses: actions/checkout@v2
-
-#       - name: Log in to Docker Hub
-#         if: contains(github.event.head_commit.message, 'push-image')
-#         uses: docker/login-action@v1 
-#         with:
-#           username: ${{ secrets.DOCKER_HUB_USERNAME }}
-#           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-
-#       - name: Build and push Docker image
-#         if: contains(github.event.head_commit.message, 'push-image')
-#         uses: docker/build-push-action@v2
-#         with:
-#           context: .
-#           push: true
-#           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/flask-api:latest
-
 name: Push to Dockerhub and Update EC2 Container
 on:
   push:
@@ -36,31 +5,31 @@ on:
       - main
 
 jobs:
-  # pushToDockerhub:
-  #   runs-on: ubuntu-latest
-  #   environment: 
-  #     name: devcontainer-workflow-env
-  #   steps:
-  #     - name: Check out code
-  #       uses: actions/checkout@v2
+  pushToDockerhub:
+    runs-on: ubuntu-latest
+    environment: 
+      name: devcontainer-workflow-env
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
 
-  #     - name: Log in to Docker Hub
-  #       if: contains(github.event.head_commit.message, 'push-image')
-  #       uses: docker/login-action@v1 
-  #       with:
-  #         username: ${{ secrets.DOCKER_HUB_USERNAME }}
-  #         password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Log in to Docker Hub
+        if: contains(github.event.head_commit.message, 'push-image')
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-  #     - name: Build and push Docker image
-  #       if: contains(github.event.head_commit.message, 'push-image')
-  #       uses: docker/build-push-action@v2
-  #       with:
-  #         context: .
-  #         push: true
-  #         tags: ${{ secrets.DOCKER_HUB_USERNAME }}/flask-api:latest
+      - name: Build and push Docker image
+        if: contains(github.event.head_commit.message, 'push-image')
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/flask-api:latest
 
   updateEC2Container:
-    # needs: pushToDockerhub
+    needs: pushToDockerhub
     runs-on: ubuntu-latest
     environment: 
       name: devcontainer-workflow-env
@@ -71,7 +40,6 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
-            # sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/flask-api:latest
           script: |
             cd app &&
             sudo docker-compose stop flask-api &&
