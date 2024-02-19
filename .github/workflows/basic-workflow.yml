@@ -26,6 +26,7 @@ jobs:
 
   pushToDockerhub:
     if: contains(github.event.head_commit.message, 'push-image')
+    needs: setup-env
     runs-on: ubuntu-latest
     environment: 
       name: devcontainer-workflow-env
