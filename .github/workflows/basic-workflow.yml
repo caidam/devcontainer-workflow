@@ -3,6 +3,8 @@ on: push
 jobs:
   myJob:
     runs-on: ubuntu-latest
+    environment: 
+      name: devcontainer-workflow-env
     steps:
       - name: My step
         env:
