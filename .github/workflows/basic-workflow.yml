@@ -1,0 +1,11 @@
+name: My Workflow
+on: push
+jobs:
+  myJob:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Run job
+        if: contains(github.event.head_commit.message, 'push-image')
+        run: echo "Running job because 'push-image' was found in the commit message!"
