@@ -5,30 +5,9 @@ on:
       - main
 
 jobs:
-#   setup-env:
-#     if: contains(github.event.head_commit.message, 'push-image')
-#     runs-on: ubuntu-latest
-#     environment: 
-#       name: devcontainer-workflow-env
-
-#     steps:
-#     - name: Checkout Repository
-#       uses: actions/checkout@v2
-
-#     - name: Set up Environment Variables
-#       run: |
-#         echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" > .env
-#         echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env
-#         echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env
-#         echo "POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}" >> .env
-#         echo "POSTGRES_SERVICE_IP=${{ secrets.POSTGRES_SERVICE_IP }}" >> .env
-#         echo "DEBUG=${{ secrets.DEBUG }}" >> .env
-#         echo "DATA_URL=${{ secrets.DATA_URL }}" >> .env
-#         # Add more lines if necessary
-
   pushToDockerhub:
+    # Add this line to run the job depending on a tag in your commit message.
     if: contains(github.event.head_commit.message, 'push-image')
-    # needs: setup-env
     runs-on: ubuntu-latest
     environment: 
       name: devcontainer-workflow-env
