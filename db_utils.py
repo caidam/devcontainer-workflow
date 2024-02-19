@@ -1,6 +1,6 @@
 from decouple import config
 from sqlalchemy import create_engine
-# import pandas as pd
+import pandas as pd
 
 def create_db_engine():
     db_user = config('POSTGRES_USER')
@@ -14,16 +14,16 @@ def create_db_engine():
 
     return engine
 
-# if __name__ == "__main__" :
+if __name__ == "__main__" :
 
-#     engine = create_db_engine()
+    engine = create_db_engine()
 
-#     df = pd.read_csv(config('FILE_URL'))
+    df = pd.read_csv(config('FILE_URL'))
 
-#     try:
+    try:
 
-#         with engine.connect() as connection:
-#             df.to_sql('datastats', engine, if_exists='replace', index=False)
+        with engine.connect() as connection:
+            df.to_sql('datastats', engine, if_exists='replace', index=False)
         
-#     except Exception as e:
-#         print(f"Error: {e}")
+    except Exception as e:
+        print(f"Error: {e}")
