@@ -5,26 +5,26 @@ on:
       - main
 
 jobs:
-  setup-env:
-    if: contains(github.event.head_commit.message, 'push-image')
-    runs-on: ubuntu-latest
-    environment: 
-      name: devcontainer-workflow-env
+#   setup-env:
+#     if: contains(github.event.head_commit.message, 'push-image')
+#     runs-on: ubuntu-latest
+#     environment: 
+#       name: devcontainer-workflow-env
 
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
+#     steps:
+#     - name: Checkout Repository
+#       uses: actions/checkout@v2
 
-    - name: Set up Environment Variables
-      run: |
-        echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" > .env
-        echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env
-        echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env
-        echo "POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}" >> .env
-        echo "POSTGRES_SERVICE_IP=${{ secrets.POSTGRES_SERVICE_IP }}" >> .env
-        echo "DEBUG=${{ secrets.DEBUG }}" >> .env
-        echo "DATA_URL=${{ secrets.DATA_URL }}" >> .env
-        # Add more lines if necessary
+#     - name: Set up Environment Variables
+#       run: |
+#         echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" > .env
+#         echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env
+#         echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env
+#         echo "POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}" >> .env
+#         echo "POSTGRES_SERVICE_IP=${{ secrets.POSTGRES_SERVICE_IP }}" >> .env
+#         echo "DEBUG=${{ secrets.DEBUG }}" >> .env
+#         echo "DATA_URL=${{ secrets.DATA_URL }}" >> .env
+#         # Add more lines if necessary
 
   pushToDockerhub:
     if: contains(github.event.head_commit.message, 'push-image')
@@ -35,6 +35,17 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
+
+      - name: Set up Environment Variables and Create .env file
+        run: |
+          echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" > $GITHUB_WORKSPACE/.env
+          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> $GITHUB_WORKSPACE/.env
+          echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> $GITHUB_WORKSPACE/.env
+          echo "POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}" >> $GITHUB_WORKSPACE/.env
+          echo "POSTGRES_SERVICE_IP=${{ secrets.POSTGRES_SERVICE_IP }}" >> $GITHUB_WORKSPACE/.env
+          echo "DEBUG=${{ secrets.DEBUG }}" >> $GITHUB_WORKSPACE/.env
+          echo "DATA_URL=${{ secrets.DATA_URL }}" >> $GITHUB_WORKSPACE/.env
+          # Add more lines if necessary
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v1 
