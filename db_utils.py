@@ -18,7 +18,7 @@ if __name__ == "__main__" :
 
     engine = create_db_engine()
 
-    df = pd.read_csv(config('FILE_URL'))
+    df = pd.read_csv(config('DATA_URL'))
 
     try:
 
